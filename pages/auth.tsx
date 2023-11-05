@@ -1,4 +1,5 @@
 import Input from "@/components/input";
+import axios from "axios";
 import React, { useCallback, useState } from "react";
 
 const Auth = () => {
@@ -14,6 +15,18 @@ const Auth = () => {
     );
   }, []);
 
+  const register = useCallback(async () => {
+    try {
+      await axios.post("/api/register", {
+        email,
+        name,
+        password,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }, [email, name, password]);
+
   return (
     <>
       <div className="relative h-full w-full bg-[url('/images/hero.jpg')] bg-no-repeat bg-center bg-fixed bg-cover">
@@ -22,7 +35,7 @@ const Auth = () => {
             <img src="/images/logo.jpg" alt="logo" className="h-12" />
           </nav>
           <div className="flex justify-center">
-            <div className=" bg-black bg-opacity-70 p-16 self-center mt-2 lg:w-2/5 lg:max-w-md rounded-md w-full">
+            <div className=" bg-black bg-opacity-70 p-8 self-center mt-2 lg:w-2/5 lg:max-w-md rounded-md w-full">
               <h2 className="text-white text-4xl mb-8 font-semibold">
                 {variant === "login" ? "Sign in" : "Register"}
               </h2>
@@ -58,7 +71,10 @@ const Auth = () => {
                   value={password}
                 />
               </div>
-              <button className="bg-red-600 py-3 text-white rounded-md w-full mt-10 hover:bg-red-700 transition">
+              <button
+                onClick={register}
+                className="bg-red-600 py-3 text-white rounded-md w-full mt-10 hover:bg-red-700 transition"
+              >
                 {variant === "login" ? "Login" : "Sign Up"}
               </button>
               <p className="text-neutral-500 mt-12">
